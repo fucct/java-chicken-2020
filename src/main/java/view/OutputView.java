@@ -2,6 +2,8 @@ package view;
 
 import domain.Menu;
 import domain.Table;
+import domain.command.Command;
+import dto.ResponseDto;
 
 import java.util.List;
 
@@ -36,5 +38,17 @@ public class OutputView {
             System.out.printf(TABLE_FORMAT, table);
         }
         System.out.println();
+    }
+
+    public static void printCommand() {
+        System.out.println("## 메인화면");
+        for(final Command command : Command.values()){
+            System.out.println(command);
+        }
+        System.out.println();
+    }
+
+    public static void printResponse(final ResponseDto response) {
+
     }
 }
