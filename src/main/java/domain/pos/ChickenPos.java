@@ -2,8 +2,10 @@ package domain.pos;
 
 import domain.order.Order;
 import domain.order.Orders;
+import domain.payment.Payment;
 import domain.table.Table;
 import domain.table.TableRepository;
+import dto.ResponseDto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,5 +43,9 @@ public class ChickenPos {
 
     public boolean isOrderedTable(Table table){
         return pos.get(table).hasOrder();
+    }
+
+    public ResponseDto calculateSum(final Table table, final Payment payment) {
+        payment.applySale(pos.get(table).calculateConditionalSum());
     }
 }

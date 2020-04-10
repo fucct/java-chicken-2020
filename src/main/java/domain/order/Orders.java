@@ -17,7 +17,17 @@ public class Orders {
     public int calculateRawSum() {
         return orders.stream()
                 .mapToInt(Order::calculateRawPrice)
+                .sum();
+    }
 
+    public int calculateConditionalSum() {
+        int chickenUnit = calculateChickenCount() / 10;
+        return calculateRawSum() - chickenUnit * 10000;
+    }
+
+    public int calculateChickenCount() {
+        return orders.stream().filter(Order::isChickenType)
+                .mapToInt(Order::getCount)
                 .sum();
     }
 

@@ -19,6 +19,14 @@ public class Order {
         }
     }
 
+    public boolean isChickenType(){
+        return menu.isChickenType();
+    }
+
+    public int getCount() {
+        return count;
+    }
+
     public int calculateRawPrice() {
         return menu.getPrice() * count;
     }

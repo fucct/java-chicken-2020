@@ -28,4 +28,8 @@ public class Menu {
     public int getPrice() {
         return price;
     }
+
+    public boolean isChickenType() {
+        return category.equals(Category.CHICKEN);
+    }
 }
