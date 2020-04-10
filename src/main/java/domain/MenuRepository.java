@@ -1,5 +1,7 @@
 package domain;
 
+import exception.IllegalMenuIdException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,5 +22,12 @@ public class MenuRepository {
 
     public static List<Menu> menus() {
         return Collections.unmodifiableList(menus);
+    }
+
+    public static Menu of(int number) {
+        return menus.stream()
+                .filter(menu -> menu.isSameId(number))
+                .findFirst()
+                .orElseThrow(() -> new IllegalMenuIdException("해당 메뉴는 존재하지 않습니다."));
     }
 }
