@@ -3,7 +3,6 @@ package view;
 import domain.Menu;
 import domain.Table;
 import domain.command.Command;
-import dto.ResponseDto;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class OutputView {
         System.out.println();
     }
 
-    public static void printResponse(final ResponseDto response) {
-
+    public static void printPayment(int tableNumber) {
+        System.out.println(tableNumber + "번 테이블의 결제를 진행합니다.");
     }
 }

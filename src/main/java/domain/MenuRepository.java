@@ -24,7 +24,7 @@ public class MenuRepository {
         return Collections.unmodifiableList(menus);
     }
 
-    public static Menu of(int number) {
+    public static Menu findMenuById(int number) {
         return menus.stream()
                 .filter(menu -> menu.isSameId(number))
                 .findFirst()

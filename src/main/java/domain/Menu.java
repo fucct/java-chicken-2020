@@ -21,4 +21,9 @@ public class Menu {
     public String toString() {
         return category + " " + number + " - " + name + " : " + price + "원";
     }
+
+
+    public int getPrice() {
+        return price;
+    }
 }

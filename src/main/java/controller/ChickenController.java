@@ -1,37 +1,45 @@
 package controller;
 
+import domain.MenuRepository;
+import domain.TableRepository;
 import dto.RequestDto;
-import dto.ResponseDto;
 import exception.IllegalCommandException;
 import service.ChickenService;
 import view.InputView;
 import view.OutputView;
 
+import java.util.List;
+
 public class ChickenController {
     ChickenService chickenService = new ChickenService();
 
     public void run() {
-        while(true){
-            OutputView.printCommand();
-            int commandNumber = InputView.inputCommandNumber();
-            RequestDto request = makeRequestDtoByCommand(commandNumber);
-            ResponseDto response = chickenService.run(request);
-            OutputView.printResponse(response);
+        OutputView.printCommand();
+        int commandNumber = InputView.inputCommandNumber();
+        while (commandNumber!=3) {
+            OutputView.printTables(chickenService.getTables());
+            RequestDto request = makeRequestBy(commandNumber);
+            chickenService.run(request);
         }
 
     }
 
-    private RequestDto makeRequestDtoByCommand(int commandNumber) {
-        if(commandNumber == 1) {
-            return new RequestDto(commandNumber, InputView.inputTableNumber(), InputView.inputMenuNumber(),
-                    InputView.inputMenuCount());
+    private RequestDto makeRequestBy(final int commandNumber) {
+        int tableNumber = InputView.inputTableNumber();
+        if(commandNumber==1){
+            OutputView.printMenus(MenuRepository.menus());
+            int menuNumber = InputView.inputMenuNumber();
+            int menuCount = InputView.inputMenuCount();
+            return new RequestDto(commandNumber, tableNumber, menuNumber, menuCount, 0);
         }
-        if(commandNumber==2) {
-            return new RequestDto(commandNumber, InputView.inputTableNumber(), InputView.inputPayment());
+
+        if(commandNumber==2){
+            OutputView.printPayment(tableNumber);
+            int payment = InputView.inputPayment();
+            return new RequestDto(commandNumber, tableNumber, 0, 0, payment);
         }
-        if(commandNumber==3){
-            return new RequestDto(commandNumber);
-        }
-        throw new IllegalCommandException("알 수 없는 명령어 입니다.");
+        throw new IllegalCommandException("존재하지 않는 명령어 입니다.");
     }
+
+
 }
