@@ -1,44 +1,61 @@
 package service;
 
-import domain.Table;
+import domain.menu.Menu;
+import domain.menu.MenuRepository;
+import domain.order.Order;
+import domain.payment.Payment;
+import domain.pos.ChickenPos;
+import domain.table.Table;
 import domain.command.Command;
+import domain.table.TableRepository;
 import dto.RequestDto;
+import dto.ResponseDto;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ChickenService {
-    private final Map<Command, Consumer<RequestDto>> runner = new HashMap<>();
-    private final ChickenPOS chickenPOS = new ChickenPOS();
+    private final Map<Command, Function<RequestDto, ResponseDto>> runner = new HashMap<>();
+    private final ChickenPos chickenPos = new ChickenPos();
 
     public ChickenService() {
         runner.put(Command.REGISTER, this::register);
         runner.put(Command.PAY, this::pay);
         runner.put(Command.EXIT, this::exit);
-
     }
 
-    public void run(final RequestDto request) {
+    public ResponseDto run(final RequestDto request) {
         Command command = Command.of(request.getCommandNumber());
-        runner.get(command).accept(request);
+        return runner.get(command).apply(request);
     }
 
-    private void register(final RequestDto request) {
-        chickenPOS.register(request.getTableNumber(), request.getMenuNumber(), request.getMenuCount());
+    private ResponseDto register(final RequestDto request) {
+        Table table = TableRepository.findTableById(request.getTableNumber());
+        Menu menu = MenuRepository.findMenuById(request.getMenuNumber());
+        Order order = new Order(menu, request.getMenuCount());
+        chickenPos.addOrder(table, order);
+        return chickenPos.getResponseDto();
     }
 
 
-    private void pay(final RequestDto request) {
-
+    private ResponseDto pay(final RequestDto request) {
+        Table table = TableRepository.findTableById(request.getTableNumber());
+        Payment payment = Payment.findPaymentById(request.getPayment());
+        return chickenPos.calculateSum(table, payment);
     }
 
-    private void exit(final RequestDto request) {
-
+    private ResponseDto exit(final RequestDto request) {
+        return new ResponseDto();
     }
 
     public List<Table> getTables() {
-        return null;
+        return chickenPos.getTables();
+    }
+
+    public void checkCommand(final int commandNumber) {
+        Command.of(commandNumber);
     }
 }

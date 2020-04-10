@@ -1,5 +1,7 @@
 package domain;
 
+import domain.menu.Menu;
+import domain.menu.MenuRepository;
 import exception.IllegalMenuIdException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

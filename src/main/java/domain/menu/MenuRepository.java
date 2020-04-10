@@ -1,5 +1,6 @@
-package domain;
+package domain.menu;
 
+import domain.category.Category;
 import exception.IllegalMenuIdException;
 
 import java.util.ArrayList;
